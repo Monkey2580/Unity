@@ -25,14 +25,6 @@ public class @PlayerMovements : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
-                },
-                {
-                    ""name"": ""OpenDoor"",
-                    ""type"": ""Button"",
-                    ""id"": ""bc975796-895c-4086-8372-849e8d31d76d"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -68,17 +60,6 @@ public class @PlayerMovements : IInputActionCollection, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e6e15ce8-8651-4764-89e3-024b24f84456"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""OpenDoor"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -88,7 +69,6 @@ public class @PlayerMovements : IInputActionCollection, IDisposable
         // Land
         m_Land = asset.FindActionMap("Land", throwIfNotFound: true);
         m_Land_Move = m_Land.FindAction("Move", throwIfNotFound: true);
-        m_Land_OpenDoor = m_Land.FindAction("OpenDoor", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -139,13 +119,11 @@ public class @PlayerMovements : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Land;
     private ILandActions m_LandActionsCallbackInterface;
     private readonly InputAction m_Land_Move;
-    private readonly InputAction m_Land_OpenDoor;
     public struct LandActions
     {
         private @PlayerMovements m_Wrapper;
         public LandActions(@PlayerMovements wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Land_Move;
-        public InputAction @OpenDoor => m_Wrapper.m_Land_OpenDoor;
         public InputActionMap Get() { return m_Wrapper.m_Land; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -158,9 +136,6 @@ public class @PlayerMovements : IInputActionCollection, IDisposable
                 @Move.started -= m_Wrapper.m_LandActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_LandActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_LandActionsCallbackInterface.OnMove;
-                @OpenDoor.started -= m_Wrapper.m_LandActionsCallbackInterface.OnOpenDoor;
-                @OpenDoor.performed -= m_Wrapper.m_LandActionsCallbackInterface.OnOpenDoor;
-                @OpenDoor.canceled -= m_Wrapper.m_LandActionsCallbackInterface.OnOpenDoor;
             }
             m_Wrapper.m_LandActionsCallbackInterface = instance;
             if (instance != null)
@@ -168,9 +143,6 @@ public class @PlayerMovements : IInputActionCollection, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @OpenDoor.started += instance.OnOpenDoor;
-                @OpenDoor.performed += instance.OnOpenDoor;
-                @OpenDoor.canceled += instance.OnOpenDoor;
             }
         }
     }
@@ -178,6 +150,5 @@ public class @PlayerMovements : IInputActionCollection, IDisposable
     public interface ILandActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnOpenDoor(InputAction.CallbackContext context);
     }
 }
